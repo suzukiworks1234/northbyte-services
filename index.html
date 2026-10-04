@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Northbyte Services provides independent software development, data processing, and workflow automation services.">
+  <title>Northbyte Services | Software & Data Automation</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a31;
+      --text: #eef2ff;
+      --muted: #aeb8d4;
+      --accent: #7dd3fc;
+      --line: #263252;
+      --max: 1040px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #0b1020 0%, #10172a 100%);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); }
+    .wrap { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(11,16,32,.88);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(10px);
+    }
+    nav {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand { font-weight: 750; letter-spacing: .02em; }
+    .navlinks { display: flex; gap: 18px; flex-wrap: wrap; font-size: .95rem; }
+    .navlinks a { color: var(--muted); text-decoration: none; }
+    main { padding-bottom: 72px; }
+    .hero { padding: 92px 0 64px; }
+    .eyebrow { color: var(--accent); font-weight: 650; text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; }
+    h1 { font-size: clamp(2.4rem, 6vw, 4.7rem); line-height: 1.05; margin: 12px 0 22px; max-width: 850px; }
+    .lead { color: var(--muted); font-size: 1.15rem; max-width: 760px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 24px;
+    }
+    .card h3 { margin-top: 0; }
+    section { padding: 34px 0; }
+    h2 { font-size: 1.7rem; margin-bottom: 16px; }
+    .muted { color: var(--muted); }
+    .steps { display: grid; gap: 14px; }
+    .step { border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; }
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0 44px;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 62px; }
+      nav { align-items: flex-start; padding: 16px 0; flex-direction: column; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav aria-label="Primary">
+        <div class="brand">Northbyte Services</div>
+        <div class="navlinks">
+          <a href="#services">Services</a>
+          <a href="#delivery">How it works</a>
+          <a href="#support">Support</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero">
+        <div class="eyebrow">Independent digital services</div>
+        <h1>Software, data processing, and workflow automation.</h1>
+        <p class="lead">
+          Northbyte Services provides project-based technical services for businesses and individuals,
+          including custom scripts, spreadsheet and CSV processing, data cleanup, testing, and workflow automation.
+          Work is delivered remotely as digital files, source code, documentation, or other agreed project outputs.
+        </p>
+      </section>
+
+      <section id="services">
+        <h2>Services</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Data processing</h3>
+            <p class="muted">CSV and Excel transformation, validation, deduplication, cleanup, filtering, reporting, and repeatable processing workflows.</p>
+          </article>
+          <article class="card">
+            <h3>Software automation</h3>
+            <p class="muted">Small software utilities, Python-based automation, command-line tools, and task-specific scripts designed around an agreed specification.</p>
+          </article>
+          <article class="card">
+            <h3>Quality & reliability</h3>
+            <p class="muted">Automated tests, reproducible examples, documentation, and verification of outputs so that delivered work can be reviewed and reused.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="delivery">
+        <h2>How projects are delivered</h2>
+        <div class="steps">
+          <div class="step"><strong>1. Scope.</strong> Requirements, deliverables, acceptance criteria, timing, and price are agreed before work begins.</div>
+          <div class="step"><strong>2. Build.</strong> Work is completed remotely using the agreed inputs and specifications.</div>
+          <div class="step"><strong>3. Verify.</strong> Deliverables are checked against the agreed requirements and, where appropriate, include tests or sample outputs.</div>
+          <div class="step"><strong>4. Deliver.</strong> Digital deliverables are provided through the project marketplace or communication channel used for the engagement.</div>
+        </div>
+        <p class="muted" style="margin-top:20px">
+          Pricing is project-based and depends on scope and complexity. Northbyte Services may accept engagements through online marketplaces such as RenX, where project terms and payments are handled through the applicable marketplace.
+        </p>
+      </section>
+
+      <section id="support">
+        <h2>Customer support</h2>
+        <div class="card">
+          <p>
+            Support for an active project is provided through the same marketplace or project communication channel
+            used for the engagement. Questions about delivered work, corrections within the agreed scope, and delivery
+            status should be sent through that project channel so the request can be matched to the correct engagement.
+          </p>
+          <p class="muted">Northbyte Services is an independent service provider and is not affiliated with or endorsed by any third-party marketplace.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Policies</h2>
+        <p><a href="./terms.html">Service Terms</a> &nbsp;·&nbsp; <a href="./privacy.html">Privacy</a></p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <strong>Northbyte Services</strong><br>
+      Independent software development, data processing, and automation services.
+    </div>
+  </footer>
+</body>
+</html>
