@@ -1,0 +1,119 @@
+name: BOOTH Sales Engine public access check
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/booth-sales-engine-public-probe.yml
+
+permissions:
+  contents: read
+
+jobs:
+  verify-public-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Check live Pages and public BOOTH image
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import html
+          from pathlib import Path
+          from html.parser import HTMLParser
+          from urllib.request import Request, urlopen
+          from urllib.error import HTTPError, URLError
+          from urllib.parse import urlparse
+
+          out = Path("public_probe")
+          out.mkdir(exist_ok=True)
+          checks = [
+            ("github_pages_html", "https://suzukiworks1234.github.io/northbyte-services/guides/yohaku-vtuber-obs-layout.html"),
+            ("booth_product", "https://yohaku-library.booth.pm/items/8955985"),
+          ]
+          class MetaParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.images = []
+                  self.title = ""
+                  self.in_title = False
+              def handle_starttag(self, tag, attrs):
+                  a = dict(attrs)
+                  if tag == "meta" and (a.get("property") in ["og:image", "og:image:url"] or a.get("name") in ["twitter:image"]):
+                      val = a.get("content")
+                      if val and val not in self.images:
+                          self.images.append(val)
+                  if tag == "title":
+                      self.in_title = True
+              def handle_endtag(self, tag):
+                  if tag == "title":
+                      self.in_title = False
+              def handle_data(self, data):
+                  if self.in_title:
+                      self.title += data
+          details = {}
+          for label, address in checks:
+              row = {"requested_url": address, "http_status": None, "public_content_verified": False}
+              try:
+                  req = Request(address, headers={"User-Agent": "Mozilla/5.0 (compatible; PublicPageVerification/1.0)", "Accept": "text/html"})
+                  with urlopen(req, timeout=25) as res:
+                      raw = res.read(3 * 1024 * 1024)
+                      row["http_status"] = res.status
+                      row["final_url"] = res.url
+                      row["content_type"] = res.headers.get("Content-Type", "")
+                  doc = raw.decode("utf-8", "replace")
+                  parser = MetaParser()
+                  parser.feed(doc)
+                  row["title"] = html.unescape(parser.title.strip())[:140]
+                  row["response_bytes_capped"] = len(raw)
+                  row["contains_item_id"] = "8955985" in doc
+                  row["contains_guide_phrase"] = "OBSで配信背景を入れる" in doc
+                  row["og_images"] = parser.images[:3]
+                  if label == "github_pages_html":
+                      row["public_content_verified"] = row["http_status"] == 200 and row["contains_item_id"] and row["contains_guide_phrase"]
+                  else:
+                      row["public_content_verified"] = row["http_status"] == 200 and ("配信" in doc or "VTuber" in doc)
+                      # Retrieve at most one product-owned publicly available thumbnail.
+                      # The product's HTML itself is public; never use authentication or cookies.
+                      if parser.images:
+                          candidate = html.unescape(parser.images[0])
+                          parsed = urlparse(candidate)
+                          allow = parsed.scheme == "https" and (parsed.hostname or "").lower().endswith(("booth.pm", "pximg.net"))
+                          if allow:
+                              try:
+                                  imgreq = Request(candidate, headers={"User-Agent": "Mozilla/5.0", "Referer": "https://booth.pm/"})
+                                  with urlopen(imgreq, timeout=25) as pic:
+                                      mime = pic.headers.get("Content-Type", "")
+                                      data = pic.read(8*1024*1024+1)
+                                  if mime.lower().startswith("image/") and len(data) <= 8*1024*1024:
+                                      ext = ".png" if "png" in mime.lower() else ".webp" if "webp" in mime.lower() else ".jpg"
+                                      filename = "booth_public_preview" + ext
+                                      (out/filename).write_bytes(data)
+                                      row["public_image_file"] = filename
+                                      row["public_image_bytes"] = len(data)
+                              except Exception as exc:
+                                  row["image_fetch_error"] = str(exc)[:160]
+                          else:
+                              row["image_fetch_error"] = "URL host not within BOOTH / pixiv image domains"
+              except HTTPError as exc:
+                  row["http_status"] = exc.code
+                  row["error"] = str(exc)[:160]
+              except (URLError, OSError, TimeoutError) as exc:
+                  row["error"] = str(exc)[:180]
+              details[label] = row
+              print(f"{label}: HTTP={row['http_status']} verified={row['public_content_verified']} title={row.get('title','-')} preview={row.get('public_image_file','-')}")
+          (out/"results.json").write_text(json.dumps(details, ensure_ascii=False, indent=2), encoding="utf-8")
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
+              for label, row in details.items():
+                  f.write(f"**{label}:** HTTP {row['http_status']}, content verified={row['public_content_verified']}, image={row.get('public_image_file','none')}\n\n")
+          PY
+      - name: Preserve check evidence (public pages only)
+        uses: actions/upload-artifact@v4
+        with:
+          name: booth-sales-engine-public-probe
+          path: public_probe/
+          if-no-files-found: error
+          retention-days: 1
