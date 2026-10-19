@@ -1,0 +1,41 @@
+name: Notify search engines of existing Yohaku OBS guide (once)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/notify-indexnow-yohaku.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Verify published IndexNow key and submit one owned guide URL
+        shell: bash
+        run: |
+          set -euo pipefail
+          KEY='e1efb77b8b9546b01937eed561de7c9a75b3f880'
+          BASE='https://suzukiworks1234.github.io/northbyte-services/guides/'
+          TARGET="${BASE}yohaku-vtuber-obs-layout.html"
+          KEY_LOCATION="${BASE}${KEY}.txt"
+          for i in $(seq 1 24); do
+            BODY=$(curl --fail --silent --show-error --location --max-time 10 "${KEY_LOCATION}" 2>/dev/null || true)
+            if [ "${BODY}" = "${KEY}" ]; then
+              echo 'Published path ownership file is accessible.'
+              break
+            fi
+            if [ "${i}" -eq 24 ]; then
+              echo 'Published key was not accessible; no IndexNow submission.'
+              exit 1
+            fi
+            sleep 10
+          done
+          STATUS=$(curl --silent --show-error --location --max-time 30 --output /tmp/indexnow-response.txt --write-out '%{http_code}' --get 'https://api.indexnow.org/indexnow' --data-urlencode "url=${TARGET}" --data-urlencode "key=${KEY}" --data-urlencode "keyLocation=${KEY_LOCATION}")
+          echo "IndexNow status: ${STATUS}"
+          case "${STATUS}" in
+            200) echo 'URL notification received; indexing/traffic is not guaranteed.';;
+            202) echo 'URL notification accepted; key validation pending; indexing/traffic is not guaranteed.';;
+            *) echo 'URL notification not confirmed'; cat /tmp/indexnow-response.txt; exit 1;;
+          esac
