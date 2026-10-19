@@ -108,6 +108,8 @@ jobs:
               details[label] = row
               print(f"{label}: HTTP={row['http_status']} verified={row['public_content_verified']} title={row.get('title','-')} preview={row.get('public_image_file','-')}")
           (out/"results.json").write_text(json.dumps(details, ensure_ascii=False, indent=2), encoding="utf-8")
+          if not all(row.get("public_content_verified",False) for row in details.values()):
+              raise SystemExit("At least one live public URL does not match the expected content")
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
               for label, row in details.items():
                   f.write(f"**{label}:** HTTP {row['http_status']}, content verified={row['public_content_verified']}, image={row.get('public_image_file','none')}\n\n")
@@ -133,6 +135,7 @@ jobs:
             raise SystemExit("image mismatch or not reachable")
           PY
       - name: Preserve check evidence (public pages only)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: booth-sales-engine-public-probe
