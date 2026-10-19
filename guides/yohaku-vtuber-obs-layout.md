@@ -2,11 +2,13 @@
 
 > **Yohaku Libraryの無料ガイド** / 2026年10月19日
 >
+> 対象商品：**星雲ダイブ｜SF・ゲーム配信用画面セット（300円、無料版あり）**。実際の配信背景の合成使用例を準備中です。
+>
 > PNGの配信背景を読み込んだあと、**立ち絵やコメントが隠れないようにする**実用的な設定手順です。製品の機能を誇張しないため、以下の配置図は模式図であり、有料素材の実画像ではありません。
 
 ## 最初に、無料サンプルで配置を試す
 
-**[VTuber配信背景セット：無料試用・有料版の確認（BOOTH）](https://yohaku-library.booth.pm/items/8955985?utm_source=github&utm_medium=referral&utm_campaign=booth_sales_engine_02&utm_content=obs_guide_markdown_top)**
+**[星雲ダイブ 配信画面セット：無料試用・有料版の確認（BOOTH）](https://yohaku-library.booth.pm/items/8984852?utm_source=github&utm_medium=referral&utm_campaign=booth_sales_engine_02&utm_content=obs_guide_markdown_top)**
 
 背景は見た目だけでなく、立ち絵・コメントと重ねた際の見やすさが重要です。無料試用で雰囲気や表示を確認し、必要な場合のみ有料版の収録内容をご覧ください。商品価格・配布内容・利用条件はBOOTH掲載内容が優先です。
 
@@ -69,7 +71,7 @@
 
 ## 5. 自分の配信に合うか、無料版で判断する
 
-**[Yohaku Library「VTuber配信背景セット」— BOOTHで無料試用を見る](https://yohaku-library.booth.pm/items/8955985?utm_source=github&utm_medium=referral&utm_campaign=booth_sales_engine_02&utm_content=obs_guide_markdown_bottom)**
+**[Yohaku Library「星雲ダイブ 配信画面セット」— BOOTHで無料試用を見る](https://yohaku-library.booth.pm/items/8984852?utm_source=github&utm_medium=referral&utm_campaign=booth_sales_engine_02&utm_content=obs_guide_markdown_bottom)**
 
 気に入った場合は商品ページで有料版との差、ファイル形式、使用条件をご確認ください。購入を前提にせず無料サンプルから試せます。
 
