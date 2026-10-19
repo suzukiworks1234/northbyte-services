@@ -1,0 +1,61 @@
+name: BOOTH Sales Engine find the actual background product
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/booth-sales-engine-shop-audit.yml
+
+permissions:
+  contents: read
+
+jobs:
+  read-public-shop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect public shop listings without a login
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import re, json, html
+          from pathlib import Path
+          from urllib.request import Request,urlopen
+          from urllib.error import HTTPError,URLError
+          from urllib.parse import quote
+          p=Path('shop_audit');p.mkdir(exist_ok=True)
+          urls={
+           'shop_home':'https://yohaku-library.booth.pm/',
+           'shop_items':'https://yohaku-library.booth.pm/items',
+           'shop_search':'https://yohaku-library.booth.pm/items?keyword='+quote('VTuber'),
+           'shop_search_bg':'https://yohaku-library.booth.pm/items?keyword='+quote('配信背景')
+          }
+          outputs={}
+          for name,url in urls.items():
+           obj={'url':url}
+           try:
+            with urlopen(Request(url,headers={'User-Agent':'Mozilla/5.0','Accept':'text/html'}),timeout=25) as resp:
+             raw=resp.read(5*1024*1024)
+             obj['status']=resp.status;obj['final_url']=resp.url
+            s=raw.decode('utf-8','replace')
+            (p/(name+'.html')).write_text(s,encoding='utf-8')
+            obj['html_size']=len(s)
+            obj['title']=html.unescape(re.search(r'<title[^>]*>(.*?)</title>',s,re.I|re.S).group(1).strip())[:160] if re.search(r'<title[^>]*>(.*?)</title>',s,re.I|re.S) else ''
+            obj['contains_exact_background_title']=('VTuber配信背景セット' in s)
+            obj['contains_background']=('配信背景' in s)
+            obj['item_ids']=list(dict.fromkeys(re.findall(r'(?:/items/|/i/)([89]\d{6})',s)))[:100]
+            obj['snippets']=[]
+            for term in ['VTuber配信背景セット','配信背景','VTuber']:
+             for m in list(re.finditer(term,s,re.I))[:8]:
+              frag=s[max(0,m.start()-160):m.start()+320]
+              obj['snippets'].append({'term':term,'html_excerpt':frag})
+           except (URLError,HTTPError,OSError) as e:obj['error']=str(e)[:220]
+           outputs[name]=obj
+           print(name,obj.get('status'),obj.get('title'),len(obj.get('item_ids',[])),obj.get('contains_exact_background_title'),obj.get('contains_background'))
+          (p/'summary.json').write_text(json.dumps(outputs,ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: booth-sales-engine-shop-audit
+          path: shop_audit/
+          retention-days: 1
