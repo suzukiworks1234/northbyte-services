@@ -30,6 +30,17 @@ jobs:
            'shop_search':'https://yohaku-library.booth.pm/items?keyword='+quote('VTuber'),
            'shop_search_bg':'https://yohaku-library.booth.pm/items?keyword='+quote('配信背景')
           }
+          urls.update({
+            'shop_page_2':'https://yohaku-library.booth.pm/items?page=2',
+            'shop_page_3':'https://yohaku-library.booth.pm/items?page=3',
+            'shop_page_4':'https://yohaku-library.booth.pm/items?page=4',
+            'shop_page_5':'https://yohaku-library.booth.pm/items?page=5',
+            'shop_page_6':'https://yohaku-library.booth.pm/items?page=6',
+            'shop_page_7':'https://yohaku-library.booth.pm/items?page=7',
+            'shop_page_8':'https://yohaku-library.booth.pm/items?page=8',
+            'shop_page_9':'https://yohaku-library.booth.pm/items?page=9',
+            'shop_page_10':'https://yohaku-library.booth.pm/items?page=10',
+          })
           outputs={}
           for name,url in urls.items():
            obj={'url':url}
