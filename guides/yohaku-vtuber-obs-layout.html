@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OBSでVTuber配信背景を設定する｜雑談・ゲーム画面の配置例と無料サンプル</title>
+<meta name="description" content="OBS StudioでVTuber向け配信背景（PNG）を読み込み、立ち絵・コメント・ゲーム映像と重ねる手順。雑談・ゲーム用の配置図、失敗を防ぐ確認表、無料サンプルへの導線を掲載。">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="OBS配信背景の入れ方と画面配置｜VTuber向けの無料ガイド">
+<meta property="og:description" content="配信背景を置いて終わりにしない。立ち絵・コメント・ゲーム映像の重ね順を図で解説。">
+<meta property="og:type" content="article">
+<style>
+:root{color-scheme:light;--ink:#18304a;--muted:#53657a;--paper:#f8fafc;--line:#d6e0ea;--accent:#1f73d2;--navy:#102c47}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;color:var(--ink);background:var(--paper);line-height:1.8}
+a{color:#095fab}.wrap{max-width:1060px;margin:0 auto;padding:0 22px}.eyebrow{font-weight:750;letter-spacing:.09em;color:#bee1ff;font-size:.83rem}
+.hero{background:linear-gradient(137deg,#10304d 0%,#17415d 58%,#32738b 100%);padding:50px 0 45px;color:#fff}
+.hero h1{font-size:clamp(1.9rem,5.4vw,3.3rem);line-height:1.34;letter-spacing:-.03em;margin:.35em 0}.lead{font-size:1.05rem;max-width:720px;color:#e6f3ff}
+.pill{display:inline-block;border:1px solid #aecbdc;border-radius:999px;padding:1px 12px;font-size:.82rem;color:#c7ddee;margin-bottom:8px}
+.cta{display:inline-block;background:#f7d679;color:#182735;text-decoration:none;border-radius:11px;padding:12px 23px;font-weight:850;box-shadow:0 3px 10px #0002}
+.cta:hover{background:#ffde91}.secondary{display:inline-block;color:#eef6ff;padding:12px 18px}
+main section{padding:38px 0 10px}h2{font-size:1.5rem;line-height:1.4;margin:0 0 14px}h3{font-size:1.1rem;margin:18px 0 7px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 5px 22px #0f365b09}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px}
+.step b{display:inline-grid;place-items:center;width:27px;height:27px;background:#e7f2ff;border-radius:999px;color:#145ca9;margin-right:8px}
+.note{color:var(--muted);font-size:.9rem}.safety{background:#edf6ff;border-left:4px solid var(--accent);padding:12px 16px;margin:18px 0}
+.screen{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;isolation:isolate;background:linear-gradient(145deg,#1b4263,#5d94b4 54%,#142a42);box-shadow:inset 0 0 0 2px #ffffff44}
+.screen.game{background:linear-gradient(135deg,#0b1b32,#1b365d)}
+.mock-banner{position:absolute;inset:6% 5% auto 5%;font-size:clamp(.72rem,1.7vw,1.06rem);font-weight:800;color:#f9fcff;opacity:.88}
+.person{position:absolute;bottom:-12%;left:14%;width:29%;height:84%;border-radius:49% 49% 23% 23% / 34% 34% 18% 18%;background:linear-gradient(160deg,#e0f3ff,#9de4de 50%,#417d9c);box-shadow:0 0 0 2px #ffffff9a}
+.person::before{content:"";position:absolute;left:20%;top:-24%;width:60%;height:35%;border-radius:50%;background:#f3d8c3;box-shadow:0 -7px 0 2px #243f5b}
+.chat{position:absolute;right:5%;top:28%;width:37%;height:54%;border-radius:10px;background:#112f49ca;border:1px solid #c0e4ff88;color:#fff;padding:4% 3%;font-size:clamp(.55rem,1.3vw,.9rem)}
+.chat em{display:block;font-style:normal;border-bottom:1px solid #ffffff32;margin:6px 0;padding-bottom:3px}
+.gamebox{position:absolute;inset:17% 13% 13% 7%;background:linear-gradient(145deg,#526982,#204c5e);border:2px dashed #bfd8ea;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:750}
+.game .person{width:20%;height:49%;left:auto;right:3%;z-index:2}
+.game .chat{top:8%;right:3%;width:21%;height:32%;font-size:.7rem;z-index:3}
+.caption{font-size:.87rem;color:#546778;margin-top:6px}
+.layers{display:grid;gap:8px;padding:0;margin:12px 0;list-style:none}.layers li{padding:8px 12px;border-radius:8px;background:#ecf3f8;border:1px solid #d4e3eb;font-weight:650;font-size:.93rem}
+table{width:100%;border-collapse:collapse;background:white}th,td{text-align:left;border-bottom:1px solid var(--line);padding:10px 12px;vertical-align:top}th{background:#edf4f9}footer{background:#eaf0f5;margin-top:48px;padding:26px 0;font-size:.85rem;color:#53657a}
+@media(max-width:730px){.grid,.grid-3{grid-template-columns:1fr}.hero{padding:32px 0}.card{padding:18px}.chat{font-size:.72rem}.mock-banner{font-size:.7rem}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"OBSでVTuber配信背景を設定する","description":"背景画像・アバター・コメントをOBSのソースに分け、正しい重なり順で配信画面を組み立てる。","step":[{"@type":"HowToStep","name":"背景PNGを読み込む","text":"OBSのシーンを作り、ソースの＋から画像を追加。PNGを選択する。"},{"@type":"HowToStep","name":"表示サイズを整える","text":"画像ソースを選択し、編集→変換→画面に合わせるなどでサイズを合わせる。"},{"@type":"HowToStep","name":"立ち絵とコメントを上に重ねる","text":"ソース一覧で背景の上に立ち絵・コメントを配置する。"},{"@type":"HowToStep","name":"録画で表示を確認する","text":"短いローカル録画で文字切れ・背景と人物の重なり・音量を確認する。"}]}
+</script>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <span class="pill">配信者向け・無料の設定ガイド</span>
+  <p class="eyebrow">Yohaku Library / VTuber streaming setup</p>
+  <h1>OBSで配信背景を入れる。<br>立ち絵とコメントまで整える。</h1>
+  <p class="lead">「背景画像を読み込んだのに、人物が隠れる」「コメントが見えない」。そんな初回設定を防ぐために、雑談配信とゲーム配信の2通りを図で整理しました。追加の有料ソフトは不要です。</p>
+  <a class="cta" href="https://yohaku-library.booth.pm/items/8955985?utm_source=github&utm_medium=referral&utm_campaign=booth_sales_engine_02&utm_content=obs_guide_hero" rel="noopener noreferrer">無料見本・商品ページを見る ↗</a>
+  <a class="secondary" href="#howto">先に設定手順を読む ↓</a>
+</div></header>
+<main class="wrap">
+<section id="howto">
+ <h2>まずは4ステップ</h2>
+ <div class="grid-3">
+  <div class="step"><b>1</b><strong>シーンを作る</strong><p>OBSの「シーン」欄で＋を選び、「雑談」などの名前を付けます。</p></div>
+  <div class="step"><b>2</b><strong>背景を読み込む</strong><p>「ソース」欄の＋ →「画像」→ 使うPNGを選択。表示サイズは「編集」→「変換」から調整します。</p></div>
+  <div class="step"><b>3</b><strong>人物・コメントを重ねる</strong><p>アバターや立ち絵、コメント表示を別ソースにして、背景より上へ配置します。</p></div>
+ </div>
+ <div class="safety"><strong>仕上げ：</strong>配信開始前に短いローカル録画を行い、画面端・文字・音声を確認してください。OBSはテスト録画を推奨しています。</div>
+</section>
+<section>
+ <h2>作例A：雑談・朝活配信</h2>
+ <div class="grid"><div class="card">
+  <div class="screen" role="img" aria-label="汎用の配置模式図。左側に立ち絵、右側にコメント欄、背面に青色の背景。"><div class="mock-banner">雑談配信の配置イメージ</div><div class="person"></div><div class="chat"><strong>COMMENTS</strong><em>コメントの表示欄</em><em>大きな文字が見える？</em><em>立ち絵と重ならない？</em></div></div>
+  <p class="caption">※これは位置を示す説明用の模式図です。販売商品のスクリーンショット・収録物ではありません。</p>
+  </div><div class="card"><h3>OBS「ソース」のおすすめ順（上→下）</h3>
+   <ol class="layers"><li>3. コメント表示</li><li>2. アバター／立ち絵</li><li>1. 背景PNG（最下層）</li></ol>
+   <p>画像の上に人物が乗る状態ならOK。人物の顔とコメント枠が重ならないように、まずは中央から少しずらして配置します。</p>
+   <p class="note">コメント取得サービスやLive2Dソフトは、このガイドの対象外です。ご利用環境の表示ソースを使ってください。</p>
+  </div></div>
+</section>
+<section>
+ <h2>作例B：ゲーム配信</h2>
+ <div class="grid"><div class="card">
+  <div class="screen game" role="img" aria-label="汎用の配置模式図。中央にゲームキャプチャ領域、右端に立ち絵と小さなコメント欄。"><div class="mock-banner">ゲーム配信の配置イメージ</div><div class="gamebox">GAME CAPTURE</div><div class="person"></div><div class="chat"><strong>CHAT</strong><em>コメント</em></div></div>
+  <p class="caption">※汎用の配置模式図。実際の有料背景やゲーム映像、アバターは表示していません。</p>
+  </div><div class="card"><h3>ソースの重なりに注意</h3>
+   <ol class="layers"><li>4. コメント・アバター（上層）</li><li>3. 必要なら透過オーバーレイ</li><li>2. ゲームキャプチャ</li><li>1. 背景画像（最下層）</li></ol>
+   <p>ゲーム映像の上に不透明の背景画像を置くとゲームが隠れます。透過オーバーレイが付属している素材の場合だけ、その透明部分を利用してください。</p>
+   <p class="note">どの素材・差分が付属するかは各商品ページで確認してください。ここでは汎用的なOBSの表示順を示しています。</p>
+  </div></div>
+</section>
+<section>
+ <h2>困りがちな3点の確認表</h2>
+ <table><thead><tr><th>困ったこと</th><th>最初に確認すること</th></tr></thead><tbody>
+ <tr><td>立ち絵が背景の後ろに隠れた</td><td>OBSのソース一覧で、立ち絵が背景より上にあるか</td></tr>
+ <tr><td>背景が画面からはみ出す</td><td>背景とOBSキャンバスの縦横比を確認し、変換の「画面に合わせる」等を試す</td></tr>
+ <tr><td>無料サンプルは使えたが有料版が必要か迷う</td><td>背景の用途、同梱内容、素材・差分・利用条件を商品ページで比較する</td></tr>
+ </tbody></table>
+</section>
+<section>
+ <div class="card">
+ <h2>まず無料版で、あなたの画面に置いてみる</h2>
+ <p>配信背景は、色合いだけでなく、<strong>アバターを置いた後に顔が見やすいか、コメントを読めるか</strong>が大切です。無料サンプルを実際に配置して、普段使う画面サイズで試してください。気に入った場合のみ、商品ページの有料版の内容をご確認ください。</p>
+ <a class="cta" href="https://yohaku-library.booth.pm/items/8955985?utm_source=github&utm_medium=referral&utm_campaign=booth_sales_engine_02&utm_content=obs_guide_bottom" rel="noopener noreferrer">VTuber配信背景セット：無料見本・本体はこちら ↗</a>
+ <p class="note">商品価格、配布形式、許諾範囲はリンク先の最新表記を優先してください。購入は不要です。独立した広告や第三者推薦ではなく、Yohaku Library自身の案内です。</p>
+ </div>
+</section>
+<section>
+ <h2>公式ヘルプ（操作の根拠）</h2>
+ <p><a href="https://obsproject.com/kb/sources-guide">OBS Sources Guide：ソースの重ね順と変換</a>／<a href="https://obsproject.com/kb/image-sources">OBS Image Sources：PNGを使う画像ソース</a>／<a href="https://obsproject.com/kb/quick-start-guide">OBS Quick Start Guide：録画での動作確認</a></p>
+ <p class="note">記事更新：2026年10月19日。OBSのバージョンやUI言語によって表示名が異なる場合があります。本文は実用手順と模式図であり、特定の商品でOBS操作を改めて実機検証したという報告ではありません。</p>
+</section>
+</main>
+<footer><div class="wrap">© Yohaku Library — このページは配信背景の配置を説明する無料ガイドです。BOOTHやOBSの公式ページではありません。</div></footer>
+</body></html>
