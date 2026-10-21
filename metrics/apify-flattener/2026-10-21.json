@@ -1,0 +1,43 @@
+{
+  "capturedAt": "2026-10-21T04:56:44.179Z",
+  "localDateJST": "2026-10-21",
+  "source": "https://api.apify.com/v2/acts/starshaped_bullsnake~dataset-json-flattener",
+  "actor": {
+    "id": "kE7e2tbkAukrjoXcZ",
+    "name": "dataset-json-flattener",
+    "storeUrl": "https://apify.com/starshaped_bullsnake/dataset-json-flattener",
+    "isPublic": true
+  },
+  "publicStats": {
+    "totalRunsIncludingOwner": 87,
+    "totalUsersIncludingOwner": 2,
+    "totalUsers7DaysIncludingOwner": 0,
+    "totalUsers30DaysIncludingOwner": 1,
+    "totalUsers90DaysIncludingOwner": 1,
+    "bookmarks": 0,
+    "reviewCount": 0,
+    "publicRunStatuses30DaysExcludingOwner": {
+      "SUCCEEDED": 65,
+      "FAILED": 0,
+      "ABORTED": 0,
+      "TIMED-OUT": 0,
+      "TOTAL": 65
+    }
+  },
+  "interpretation": {
+    "publicRunStatuses30DaysExcludingOwner": "Rolling 30-day counts; owner runs excluded by Apify. Changes between snapshots are NOT daily run counts.",
+    "totalUsers": "Unique Actor users INCLUDING the owner. Not equivalent to paying customers.",
+    "conversionAttribution": "UNAVAILABLE: no verified referral-to-paid-user linkage."
+  },
+  "unavailableWithoutAuthenticatedReporting": [
+    "actorDetailVisits",
+    "actorInputPageVisits",
+    "trialToStartConversion",
+    "paidExternalUsers",
+    "paidEventLedger",
+    "grossRevenueUsd",
+    "platformCostsUsd",
+    "netProfitUsd",
+    "trafficByCampaign"
+  ]
+}
