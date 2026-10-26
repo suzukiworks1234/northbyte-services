@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Flatten nested Apify Dataset JSON into CSV-ready spreadsheet columns without code. See a two-row example, how to export, pricing cautions, and when native export is enough.">
+  <link rel="canonical" href="https://suzukiworks1234.github.io/northbyte-services/guides/flatten-apify-dataset-to-csv.html">
+  <title>Flatten Nested Apify Dataset JSON to CSV-Ready Columns | Northbyte Services</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b1020; --panel:#121a31; --text:#eef2ff; --muted:#b6c3de; --accent:#7dd3fc; --line:#263252; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--text); }
+    main,header,footer { max-width:860px; padding:22px 24px; margin:auto; }
+    header { border-bottom:1px solid var(--line); }
+    footer { border-top:1px solid var(--line); margin-top:36px; color:var(--muted); }
+    h1 { font-size:clamp(2rem,5vw,3rem); line-height:1.15; }
+    h2 { margin-top:34px; font-size:1.5rem; }
+    a { color:var(--accent); }
+    .muted { color:var(--muted); }
+    .card { border:1px solid var(--line); background:var(--panel); border-radius:14px; padding:18px; margin:20px 0; }
+    .cta { display:inline-block; margin:6px 0; padding:12px 18px; background:var(--accent); color:#06101f; border-radius:9px; font-weight:700; text-decoration:none; }
+    pre { white-space:pre-wrap; overflow-wrap:anywhere; border:1px solid var(--line); background:#070c18; padding:16px; border-radius:9px; font-size:.9rem; }
+    li { margin-bottom:10px; }
+  </style>
+</head>
+<body>
+  <header><a href="../index.html">← Northbyte Services</a></header>
+  <main>
+    <p class="muted">Practical Apify workflow · No custom script required</p>
+    <h1>Flatten nested Apify Dataset JSON into CSV-ready columns</h1>
+    <p>Have an Apify scraper Dataset with nested fields such as <code>company.location.city</code> or <code>role.title</code>? The <a href="https://apify.com/starshaped_bullsnake/dataset-json-flattener?utm_source=northbyte_site&amp;utm_medium=howto_page&amp;utm_campaign=flattener_sales_engine_20261026">Dataset JSON Flattener Actor</a> saves a <strong>separate flattened Dataset</strong>. You can then export that Dataset to CSV or Excel with Apify's normal export tools.</p>
+    <p class="muted">It does not generate a standalone CSV file, expand arrays, deduplicate rows, or overwrite your input Dataset.</p>
+
+    <section class="card">
+      <h2>Example: nested input → spreadsheet fields</h2>
+      <p>The following rows are fictional examples, not actual customer data or evidence of a live run.</p>
+      <strong>Input row</strong>
+      <pre>{
+  "id": "J001",
+  "company": {"name": "Northline Labs", "location": {"city": "Leeds"}},
+  "role": {"title": "Data Analyst"}
+}</pre>
+      <strong>Expected flattened row</strong>
+      <pre>{
+  "id": "J001",
+  "company.name": "Northline Labs",
+  "company.location.city": "Leeds",
+  "role.title": "Data Analyst"
+}</pre>
+    </section>
+
+    <h2>How to convert an existing Apify Dataset</h2>
+    <ol>
+      <li>Open the Dataset that contains your scraper's nested JSON and find its Dataset ID.</li>
+      <li>Open <a href="https://apify.com/starshaped_bullsnake/dataset-json-flattener?utm_source=northbyte_site&amp;utm_medium=howto_page&amp;utm_campaign=flattener_sales_engine_20261026">Dataset JSON Flattener on Apify</a>, choose the <strong>Input</strong> tab, and select the <strong>Source Dataset</strong> (or supply its ID). Your normal read permissions apply.</li>
+      <li>Keep the key separator <code>.</code>, or use <code>_</code> for keys such as <code>company_location_city</code>.</li>
+      <li><strong>Check the current Pricing panel and set an appropriate run-cost limit</strong> before starting. Even an example run can incur a charge.</li>
+      <li>Once the run succeeds, open its new output Dataset and use Apify's standard CSV/Excel export controls.</li>
+    </ol>
+    <p><a class="cta" href="https://apify.com/starshaped_bullsnake/dataset-json-flattener?utm_source=northbyte_site&amp;utm_medium=howto_page&amp;utm_campaign=flattener_sales_engine_20261026">Open Actor &amp; review pricing →</a></p>
+
+    <h2>When this extra Actor is worth it</h2>
+    <p>If you need just a one-time export of selected nested fields, Apify's <a href="https://docs.apify.com/api/v2/actor-run-dataset-items-get">native Dataset export with flatten options</a> may be enough. Use this Actor when you want a new, persisted flat Dataset for repeat exports or downstream workflows, or a configurable separator. Arrays remain arrays; key collisions may overwrite values, so inspect a small sample first.</p>
+    <p class="muted">Repeated runs can incur repeated charges; failed or interrupted runs may have partial output. Always check the run status and saved rows. This guide is independent documentation, not affiliated with Apify.</p>
+    <p><a href="https://github.com/suzukiworks1234/northbyte-services/blob/main/guides/apify-dataset-nested-json-to-csv.md">Read the longer guide with a two-row inline-input example and additional limitations →</a></p>
+  </main>
+  <footer>Northbyte Services · Independent software and data automation documentation · <a href="../privacy.html">Privacy</a></footer>
+</body>
+</html>
