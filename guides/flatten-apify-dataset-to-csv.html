@@ -49,6 +49,22 @@
 }</pre>
     </section>
 
+    <section class="card">
+      <h2>Try two inline rows without a source Dataset</h2>
+      <p>If you have no existing Dataset yet, you can start from the Actor's <strong>Input</strong> tab instead of relying on a public Task example. Leave <strong>Source Dataset</strong> empty. In JSON input view, use the complete input below; in form view, enter the <code>rows</code> array as <strong>Inline rows</strong> and set <strong>Key separator</strong> to <code>.</code>.</p>
+      <p>Copy-ready example input (fictional records):</p>
+      <pre>{
+  "rows": [
+    {"id":"J001","company":{"name":"Northline Labs","location":{"city":"Leeds"}},"role":{"title":"Data Analyst"}},
+    {"id":"J002","company":{"name":"Harbor Studio","location":{"city":"Bristol"}},"role":{"title":"Automation Engineer"}}
+  ],
+  "separator": "."
+}</pre>
+      <p>Expected output keys include <code>company.name</code>, <code>company.location.city</code>, and <code>role.title</code>. Run successfully first, then export the newly saved output Dataset as CSV or Excel.</p>
+      <p><strong>Not a free preview:</strong> Running this example can incur Apify charges. Check the live Pricing panel, your plan and the run-cost limit before starting; merely reading or copying this example does not execute the Actor.</p>
+      <p><a href="https://apify.com/starshaped_bullsnake/dataset-json-flattener?utm_source=northbyte_site&amp;utm_medium=howto_page&amp;utm_campaign=flattener_sales_engine_20261026">Open the Actor's Input tab from its Store page and check pricing</a></p>
+    </section>
+
     <h2>How to convert an existing Apify Dataset</h2>
     <ol>
       <li>Open the Dataset that contains your scraper's nested JSON and find its Dataset ID.</li>
